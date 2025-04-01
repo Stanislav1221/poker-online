@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn English Words</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .word-card { padding: 15px; margin: 10px; background: #ddd; border-radius: 10px; cursor: pointer; display: inline-block; }
+    </style>
+</head>
+<body>
+    <h2>Tap a word to hear and see the translation</h2>
+    <div id="words-container"></div>
+    
+    <script>
+        const words = [
+            { en: "apple", ua: "яблуко" },
+            { en: "banana", ua: "банан" },
+            { en: "cat", ua: "кіт" },
+            { en: "dog", ua: "собака" },
+            { en: "sun", ua: "сонце" },
+            { en: "moon", ua: "місяць" },
+            { en: "water", ua: "вода" },
+            { en: "fire", ua: "вогонь" },
+            { en: "milk", ua: "молоко" },
+            { en: "bread", ua: "хліб" }
+        ];
+
+        const container = document.getElementById("words-container");
+
+        words.forEach((word, index) => {
+            const card = document.createElement("div");
+            card.className = "word-card";
+            card.textContent = word.en;
+            card.onclick = () => {
+                card.textContent = card.textContent === word.en ? word.ua : word.en;
+                const speech = new SpeechSynthesisUtterance(word.en);
+                speech.lang = "en-US";
+                window.speechSynthesis.speak(speech);
+            };
+            container.appendChild(card);
+        });
+    </script>
+</body>
+</html>

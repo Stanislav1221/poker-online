@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Онлайн Покер</title>
+
+  <!-- Підключення Firebase SDK -->
+  <script type="module">
+    // Імпортуємо функції, які нам потрібні
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+    // Налаштування Firebase для твого додатку
+    const firebaseConfig = {
+      apiKey: "AIzaSyDN_LdTwNK7PH_56z-bjq9McUhLGBkQoWQ",
+      authDomain: "poker-online-b1d12.firebaseapp.com",
+      databaseURL: "https://poker-online-b1d12-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "poker-online-b1d12",
+      storageBucket: "poker-online-b1d12.firebasestorage.app",
+      messagingSenderId: "187648538023",
+      appId: "1:187648538023:web:717f826764821df676b282",
+      measurementId: "G-REPD6RE52R"
+    };
+
+    // Ініціалізація Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    // Ініціалізація Firebase Authentication
+    const auth = getAuth();
+
+    // Обробка логіну
+    const loginForm = document.getElementById('login');
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        alert('Логін успішний');
+        console.log(user);
+      } catch (error) {
+        alert('Помилка логіну: ' + error.message);
+      }
+    });
+
+    // Реєстрація користувача
+    const registerForm = document.getElementById('register');
+    if (registerForm) {
+      registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const nickname = document.getElementById('register-nickname').value; // Нікнейм
+
+        console.log('Реєстрація почалася', email, password, nickname); // Лог початку реєстрації
+
+        try {
+          // Реєстрація користувача
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+          alert('Реєстрація успішна');
+          console.log('Користувач створений:', user);
+
+          // Додаємо нікнейм до Firebase Realtime Database
+          const db = getDatabase();
+          await set(ref(db, 'users/' + user.uid), {
+            email: email,
+            nickname: nickname,
+            uid: user.uid,
+          });
+          console.log('Дані користувача збережено в Firebase');
+        } catch (error) {
+          console.error('Помилка реєстрації:', error);
+          alert('Помилка реєстрації: ' + error.message);
+        }
+      });
+    }
+  </script>
+</head>
+<body>
+  <div id="login-form">
+    <h2>Логін / Реєстрація</h2>
+    <form id="login">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Пароль" required />
+      <button type="submit">Увійти</button>
+    </form>
+
+    <p>Ще не зареєстровані? <button id="register-btn">Зареєструватися</button></p>
+
+    <!-- Форма для реєстрації (спочатку прихована) -->
+    <div id="register-form" style="display: none;">
+      <h3>Реєстрація</h3>
+      <input type="email" id="register-email" placeholder="Email" required />
+      <input type="password" id="register-password" placeholder="Пароль" required />
+      <input type="text" id="register-nickname" placeholder="Нікнейм" required /> <!-- Поле для нікнейму -->
+      <button type="submit">Зареєструватися</button>
+    </div>
+  </div>
+
+  <script>
+    const registerBtn = document.getElementById('register-btn');
+    const registerForm = document.getElementById('register-form');
+
+    // Показати форму реєстрації
+    registerBtn.addEventListener('click', () => {
+      registerForm.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
+
+

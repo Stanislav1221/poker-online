@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn English Words</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f0f0f0; }
+        .word-card { padding: 15px; margin: 10px; background: #f4f4f4; border-radius: 10px; cursor: pointer; display: inline-block; width: 150px; text-align: center; font-size: 18px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); transition: transform 0.3s; }
+        .word-card:hover { transform: scale(1.05); }
+        .words-container { display: flex; flex-wrap: wrap; justify-content: center; }
+    </style>
+</head>
+<body>
+    <h2>Tap a word to hear and see the translation</h2>
+    <div class="words-container" id="words-container"></div>
+
+    <script>
+        const words = [
+            { en: "apple", ua: "яблуко" },
+            { en: "banana", ua: "банан" },
+            { en: "cat", ua: "кіт" },
+            { en: "dog", ua: "собака" },
+            { en: "sun", ua: "сонце" },
+            { en: "moon", ua: "місяць" },
+            { en: "water", ua: "вода" },
+            { en: "fire", ua: "вогонь" },
+            { en: "milk", ua: "молоко" },
+            { en: "bread", ua: "хліб" },
+            { en: "house", ua: "будинок" },
+            { en: "tree", ua: "дерево" },
+            { en: "car", ua: "автомобіль" },
+            { en: "school", ua: "школа" },
+            { en: "book", ua: "книга" },
+            { en: "pen", ua: "ручка" },
+            { en: "paper", ua: "папір" },
+            { en: "computer", ua: "комп'ютер" },
+            { en: "phone", ua: "телефон" },
+            { en: "friend", ua: "друг" },
+            { en: "family", ua: "сім'я" },
+            { en: "food", ua: "їжа" },
+            { en: "drink", ua: "напій" },
+            { en: "music", ua: "музика" },
+            { en: "movie", ua: "фільм" },
+            { en: "window", ua: "вікно" },
+            { en: "door", ua: "двері" },
+            { en: "light", ua: "світло" },
+            { en: "dark", ua: "темнота" },
+            { en: "hot", ua: "гарячий" },
+            { en: "cold", ua: "холодний" },
+            { en: "love", ua: "любов" },
+            { en: "happy", ua: "щасливий" },
+            { en: "sad", ua: "сумний" },
+            { en: "fast", ua: "швидкий" },
+            { en: "slow", ua: "повільний" },
+            { en: "big", ua: "великий" },
+            { en: "small", ua: "маленький" },
+            { en: "new", ua: "новий" },
+            { en: "old", ua: "старий" },
+            { en: "beautiful", ua: "гарний" },
+            { en: "ugly", ua: "потворний" },
+            { en: "rich", ua: "багатий" },
+            { en: "poor", ua: "бідний" },
+            { en: "clean", ua: "чистий" },
+            { en: "dirty", ua: "брудний" },
+            { en: "easy", ua: "легкий" },
+            { en: "difficult", ua: "складний" },
+            { en: "right", ua: "правильний" },
+            { en: "wrong", ua: "неправильний" },
+            { en: "open", ua: "відкритий" },
+            { en: "closed", ua: "закритий" }
+        ];
+
+        const container = document.getElementById("words-container");
+
+        words.forEach((word) => {
+            const card = document.createElement("div");
+            card.className = "word-card";
+            card.textContent = word.en;
+            card.onclick = () => {
+                const currentWord = card.textContent === word.en ? word.ua : word.en;
+                card.textContent = currentWord;
+
+                const speech = new SpeechSynthesisUtterance(word.en);
+                speech.lang = "en-US";
+                window.speechSynthesis.speak(speech);
+            };
+            container.appendChild(card);
+        });
+    </script>
+</body>
+</html>

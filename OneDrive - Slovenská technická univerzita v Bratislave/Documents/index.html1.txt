@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вивчення англійських слів</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .word {
+            font-size: 24px;
+            margin: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .word:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Вивчення англійських слів</h1>
+    <div id="wordContainer"></div>
+    <audio id="audio"></audio>
+
+    <script>
+        const words = [
+            { ua: "Привіт", en: "Hello" },
+            { ua: "Собака", en: "Dog" },
+            { ua: "Яблуко", en: "Apple" },
+            { ua: "Дім", en: "House" },
+            { ua: "Кіт", en: "Cat" },
+            { ua: "Молоко", en: "Milk" },
+            { ua: "Вода", en: "Water" },
+            { ua: "Їжа", en: "Food" },
+            { ua: "Магазин", en: "Shop" },
+            { ua: "Робота", en: "Work" },
+            { ua: "Сонце", en: "Sun" },
+            { ua: "Місяць", en: "Moon" },
+            { ua: "Дощ", en: "Rain" },
+            { ua: "Сніг", en: "Snow" },
+            { ua: "Дерево", en: "Tree" },
+            { ua: "Квітка", en: "Flower" },
+            { ua: "Стіл", en: "Table" },
+            { ua: "Стілець", en: "Chair" },
+            { ua: "Місто", en: "City" },
+            { ua: "Село", en: "Village" },
+            { ua: "Друзі", en: "Friends" },
+            { ua: "Родина", en: "Family" },
+            { ua: "Школа", en: "School" },
+            { ua: "Університет", en: "University" },
+            { ua: "Книга", en: "Book" },
+            { ua: "Ручка", en: "Pen" },
+            { ua: "Гроші", en: "Money" },
+            { ua: "Автомобіль", en: "Car" },
+            { ua: "Літак", en: "Plane" },
+            { ua: "Поїзд", en: "Train" },
+            { ua: "Я йду на роботу", en: "I am going to work" },
+            { ua: "Я йду в магазин", en: "I am going to the shop" },
+            { ua: "На вулиці йде дощ", en: "It is raining outside" },
+            { ua: "Я люблю читати книги", en: "I like to read books" },
+            { ua: "Я хочу спати", en: "I want to sleep" },
+            { ua: "Що це?", en: "What is this?" },
+            { ua: "Де ти?", en: "Where are you?" },
+            { ua: "Я тебе люблю", en: "I love you" },
+            { ua: "Скільки це коштує?", en: "How much is this?" },
+            { ua: "Мені подобається ця музика", en: "I like this music" },
+            { ua: "Це мій друг", en: "This is my friend" },
+            { ua: "Мені холодно", en: "I am cold" },
+            { ua: "Мені жарко", en: "I am hot" },
+            { ua: "Я втомився", en: "I am tired" },
+            { ua: "Як тебе звати?", en: "What is your name?" },
+            { ua: "Я не розумію", en: "I do not understand" },
+            { ua: "Допоможіть мені, будь ласка", en: "Help me, please" },
+            { ua: "Я хочу їсти", en: "I want to eat" },
+            { ua: "Це дуже смачно", en: "It is very tasty" }
+        ];
+
+        function toggleWord(index) {
+            let wordElement = document.getElementById(`word-${index}`);
+            let currentWord = wordElement.innerText;
+
+            if (currentWord === words[index].ua) {
+                wordElement.innerText = words[index].en;
+                playAudio(words[index].en);
+            } else {
+                wordElement.innerText = words[index].ua;
+            }
+        }
+
+        function playAudio(word) {
+            let audio = document.getElementById("audio");
+            let speech = new SpeechSynthesisUtterance(word);
+            speech.lang = "en-US";
+            window.speechSynthesis.speak(speech);
+        }
+
+        function loadWords() {
+            let wordContainer = document.getElementById("wordContainer");
+            words.forEach((word, index) => {
+                let div = document.createElement("div");
+                div.className = "word";
+                div.id = `word-${index}`;
+                div.innerText = word.ua;
+                div.onclick = function() {
+                    toggleWord(index);
+                };
+                wordContainer.appendChild(div);
+            });
+        }
+
+        loadWords();
+    </script>
+</body>
+</html>
